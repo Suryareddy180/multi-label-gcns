@@ -3,7 +3,8 @@ from typing import List, Tuple
 import hydra
 from omegaconf import DictConfig
 from pytorch_lightning import LightningDataModule, LightningModule, Trainer
-from lightning.pytorch.loggers.logger import Logger as LightningLoggerBase
+from pytorch_lightning.loggers.logger import Logger as LightningLoggerBase
+
 
 
 from src import utils
