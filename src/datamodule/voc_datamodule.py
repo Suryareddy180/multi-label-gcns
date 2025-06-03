@@ -93,14 +93,14 @@ class VOCDataModule(pl.LightningDataModule):
             root=self.hparams.data_dir,
             year=str(self.hparams.year),
             image_set="trainval",
-            download=self.hparams.download,
+            download=True,
         )
         if self.hparams.year == 2007:
             VOCDetection(
                 root=self.hparams.data_dir,
                 year=str(self.hparams.year),
                 image_set="test",
-                download=self.hparams.download,
+                download=True,
             )
 
     def target_transform(self, target: Dict[str, Any]):
