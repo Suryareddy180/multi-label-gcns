@@ -104,10 +104,8 @@ class MLGraphModule(pl.LightningModule):
         return loss
 
     def on_validation_epoch_end(self):
-        acc = self.val_acc.compute()    # get current val acc
-        self.val_acc_best(acc)          # update best so far val acc
-
-        # log `val_acc_best` as a value through `.compute()` method
+        acc = self.val_acc.compute()
+        self.val_acc_best(acc)
         self.log("val/acc_best", self.val_acc_best.compute(), prog_bar=True)
 
 
