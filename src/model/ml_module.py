@@ -103,12 +103,15 @@ class MLGraphModule(pl.LightningModule):
 
         return loss
 
-    def validation_epoch_end(self, outputs: Union[Any, List[Any]]):
-        acc = self.val_acc.compute()    # get current val acc
-        self.val_acc_best(acc)          # update best so far val acc
-        # log `val_acc_best` as a value through `.compute()` method
-        # otherwise metric would be reset by lightning after each epoch
+    def on_validation_epoch_end(self):
+        acc = self.val_acc.compute()
+        self.val_acc_best(acc)
         self.log("val/acc_best", self.val_acc_best.compute(), prog_bar=True)
+
+        # Optional: Reset manually if needed (usually done automatically)
+        self.val_acc.reset()
+        self.val_f1.reset()
+        self.val_loss.reset()
 
     def test_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
