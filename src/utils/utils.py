@@ -5,7 +5,7 @@ from typing import Callable, List
 import hydra
 from omegaconf import DictConfig
 from pytorch_lightning import Callback
-from pytorch_lightning.loggers import LightningLoggerBase
+from pytorch_lightning.loggers.logger import LightningLoggerBase
 from pytorch_lightning.utilities import rank_zero_only
 
 from src.utils import pylogger, rich_utils
