@@ -92,21 +92,29 @@ class MLGraphModule(pl.LightningModule):
     def validation_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
-        # update and log metrics
-        self.val_loss(loss)
-        self.val_acc(preds, targets)
-        self.val_f1(preds, targets)
+        # update metrics
+        self.val_loss.update(loss)
+        self.val_acc.update(preds, targets)
+        self.val_f1.update(preds, targets)
 
-        self.log("val/loss", self.val_loss, on_step=True, on_epoch=True, prog_bar=True)
-        self.log("val/acc", self.val_acc, on_step=True, on_epoch=True, prog_bar=True)
-        self.log("val/f1", self.val_f1, on_step=True, on_epoch=True, prog_bar=True)
+        # log metrics
+        self.log("val/loss", self.val_loss, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/f1", self.val_f1, on_step=False, on_epoch=True, prog_bar=True)
 
         return loss
 
     def on_validation_epoch_end(self):
         acc = self.val_acc.compute()
-        self.val_acc_best(acc)
+        self.val_acc_best.update(acc)
+
+        # Log the best accuracy seen so far
         self.log("val/acc_best", self.val_acc_best.compute(), prog_bar=True)
+
+        # Reset metrics at epoch end (optional but recommended)
+        self.val_loss.reset()
+        self.val_acc.reset()
+        self.val_f1.reset()
 
 
     def test_step(self, batch: Any, batch_idx: int):
