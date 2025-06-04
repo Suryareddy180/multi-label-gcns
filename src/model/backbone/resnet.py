@@ -6,7 +6,7 @@ class ResNet(nn.Module):
     def __init__(
         self,
         num_layers: int = 50,
-        weights: str = "IMAGENET1K_V2",
+        weights: str = None, 
         progress: bool = True
     ):
         super(ResNet, self).__init__()

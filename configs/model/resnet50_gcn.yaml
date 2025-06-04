@@ -3,7 +3,7 @@ _target_: src.model.ml_module.MLGraphModule
 backbone:
   _target_: src.model.backbone.resnet.ResNet
   num_layers: 50
-  weights: IMAGENET1K_V2
+  weights: null
   progress: True
 
 graph:
