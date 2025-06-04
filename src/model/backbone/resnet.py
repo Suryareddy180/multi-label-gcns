@@ -11,7 +11,7 @@ class ResNet(nn.Module):
     ):
         super(ResNet, self).__init__()
         assert num_layers in [34, 50, 101]
-        assert weights in ["IMAGENET1K_V1", "IMAGENET1K_V2"]
+        assert weights is None or weights in ["IMAGENET1K_V1", "IMAGENET1K_V2"]
 
         params = {"weights": weights, "progress": progress}
         if num_layers == 34:
