@@ -1,27 +1,22 @@
 import torch.nn as nn
 from torchvision import models
 
-
 class ResNet(nn.Module):
-    def __init__(
-        self,
-        num_layers: int = 50,
-        weights: str = None,
-        progress: bool = True
-    ):
-        super(ResNet, self).__init__()
-        assert num_layers in [34, 50, 101]
-        assert weights in ["IMAGENET1K_V1", "IMAGENET1K_V2"]
+    def _init_(self, num_layers: int = 50, weights: str = None, progress: bool = True):
+        super(ResNet, self)._init_()
 
-        params = {"weights": weights, "progress": progress}
+        assert num_layers in [34, 50, 101], "Only ResNet-34, 50, and 101 are supported."
+
+        # Select appropriate model without pretrained weights (weights=None)
         if num_layers == 34:
-            self.resnet = models.resnet34(**params)
+            self.resnet = models.resnet34(weights=None, progress=progress)
         elif num_layers == 50:
-            self.resnet = models.resnet50(**params)
+            self.resnet = models.resnet50(weights=None, progress=progress)
         else:
-            self.resnet = models.resnet101(**params)
+            self.resnet = models.resnet101(weights=None, progress=progress)
 
     def get_backbone(self):
+        # Removes last two layers (avgpool and fc)
         return nn.Sequential(*list(self.resnet.children())[:-2])
 
     def forward(self, x):
